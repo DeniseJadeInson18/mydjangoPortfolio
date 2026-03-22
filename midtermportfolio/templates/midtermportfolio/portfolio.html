@@ -1,0 +1,387 @@
+{% extends 'midtermportfolio/base.html' %}
+{% load static %}
+
+{% block extra_css %}
+
+.portfolio-hero {
+    padding: 4rem 2.5rem 3rem;
+    border-bottom: 1px solid var(--border);
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 2rem;
+    flex-wrap: wrap;
+}
+
+.portfolio-hero p {
+    font-size: 0.95rem;
+    line-height: 1.8;
+    color: var(--muted);
+    max-width: 400px;
+}
+
+/* FILTER */
+.filter-wrap {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 1.5rem 2.5rem;
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    border-bottom: 1px solid var(--border);
+}
+
+.filter-btn {
+    font-size: 0.8rem;
+    font-weight: 500;
+    font-family: 'Karla', sans-serif;
+    padding: 0.45rem 1.1rem;
+    border: 1.5px solid var(--border);
+    background: transparent;
+    color: var(--muted);
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.filter-btn:hover {
+    border-color: var(--terra);
+    color: var(--terra);
+}
+
+.filter-btn.active {
+    background: var(--terra);
+    border-color: var(--terra);
+    color: #fff;
+}
+
+/* GRID */
+.projects-wrap {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 3rem 2.5rem;
+}
+
+.projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.5rem;
+}
+
+.project-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: box-shadow 0.25s, border-color 0.25s;
+}
+
+.project-card:hover {
+    box-shadow: 0 6px 24px rgba(28, 20, 16, 0.08);
+    border-color: #d5c9bc;
+}
+
+.project-thumb {
+    height: 160px;
+    background: var(--cream2);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.project-thumb-icon {
+    font-size: 3rem;
+    color: var(--border);
+    transition: color 0.3s, transform 0.3s;
+}
+
+.project-card:hover .project-thumb-icon {
+    color: var(--terra);
+    transform: scale(1.08);
+}
+
+.project-cat-badge {
+    position: absolute;
+    top: 0.9rem;
+    left: 0.9rem;
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.25rem 0.65rem;
+    background: var(--cream);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    color: var(--muted);
+}
+
+.project-num {
+    position: absolute;
+    bottom: 0.7rem;
+    right: 1rem;
+    font-family: 'Fraunces', serif;
+    font-size: 2.5rem;
+    font-weight: 600;
+    color: var(--border);
+    line-height: 1;
+    font-style: italic;
+}
+
+.project-body {
+    padding: 1.5rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.project-title {
+    font-family: 'Fraunces', serif;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 0.5rem;
+}
+
+.project-desc {
+    font-size: 0.83rem;
+    line-height: 1.8;
+    color: var(--muted);
+    margin-bottom: 1.2rem;
+    flex: 1;
+}
+
+.project-tools {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-bottom: 1.2rem;
+}
+
+.project-tool {
+    font-size: 0.7rem;
+    font-weight: 500;
+    padding: 0.2rem 0.6rem;
+    background: var(--cream);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    color: var(--ink);
+}
+
+.project-links {
+    display: flex;
+    gap: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+}
+
+.project-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.project-link:hover { color: var(--terra); }
+
+.no-results {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 5rem 2rem;
+    color: var(--muted);
+}
+
+.no-results i {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    opacity: 0.3;
+    display: block;
+}
+
+@media (max-width: 768px) {
+    .portfolio-hero, .filter-wrap, .projects-wrap { padding-left: 1.5rem; padding-right: 1.5rem; }
+    .projects-grid { grid-template-columns: 1fr; }
+}
+
+{% endblock %}
+
+{% block content %}
+
+<div class="portfolio-hero">
+    <div class="reveal">
+        <div class="section-eyebrow">Portfolio</div>
+        <h1 class="section-heading">My <em>projects</em></h1>
+    </div>
+    <p class="reveal">
+        Graphics design work from my 2nd and 3rd year — branding, logos,
+        social media, and print materials.
+    </p>
+</div>
+
+<div class="filter-wrap">
+    <button class="filter-btn active" data-category="all">All</button>
+    <button class="filter-btn" data-category="branding">Branding</button>
+    <button class="filter-btn" data-category="logo">Logo</button>
+    <button class="filter-btn" data-category="social">Social Media</button>
+    <button class="filter-btn" data-category="illustration">Illustration</button>
+    <button class="filter-btn" data-category="print">Print</button>
+</div>
+<div class="projects-wrap">
+    <div class="projects-grid" id="projects-grid"></div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+const projects = [
+    {
+        num: "01",
+        title: "Tech Startup Brand Identity",
+        desc: "Complete brand identity for a local tech startup — logo, color palette, typography, and a short brand guidelines document.",
+        category: "branding",
+        icon: "fa-building",
+        tools: ["Adobe Illustrator", "Figma", "Photoshop"],
+        github: "https://github.com/denisejadeinson"
+    },
+    {
+        num: "02",
+        title: "Coffee Shop Logo",
+        desc: "Minimalist logo for a small local coffee shop. The brief was simple: warm, memorable, and works at any size.",
+        category: "logo",
+        icon: "fa-mug-hot",
+        tools: ["Adobe Illustrator", "Canva"],
+        github: "https://github.com/denisejadeinson"
+    },
+    {
+        num: "03",
+        title: "Product Launch Campaign",
+        desc: "Social media graphics for a product launch — Instagram posts, stories, and Facebook cover across three weeks of content.",
+        category: "social",
+        icon: "fa-hashtag",
+        tools: ["Canva", "Photoshop", "Figma"],
+        github: "https://github.com/denisejadeinson"
+    },
+    {
+        num: "04",
+        title: "Children's Book Illustrations",
+        desc: "A set of character illustrations for a short children's educational story. Bright, friendly, and made to hold a kid's attention.",
+        category: "illustration",
+        icon: "fa-paintbrush",
+        tools: ["Adobe Illustrator", "Procreate"],
+        github: "https://github.com/denisejadeinson"
+    },
+    {
+        num: "05",
+        title: "Restaurant Visual Identity",
+        desc: "Branding package for a small restaurant — logo, menu layout, business card, and a few social media templates.",
+        category: "branding",
+        icon: "fa-utensils",
+        tools: ["Illustrator", "InDesign", "Figma"],
+        github: "https://github.com/denisejadeinson"
+    },
+    {
+        num: "06",
+        title: "Instagram Story Templates",
+        desc: "20 editable Instagram story templates for a small brand. Cohesive visual language, easy to customise week to week.",
+        category: "social",
+        icon: "fa-mobile-screen",
+        tools: ["Canva", "Photoshop"],
+        github: "https://github.com/denisejadeinson"
+    },
+    {
+        num: "07",
+        title: "Music Festival Branding",
+        desc: "Visual identity for a local music event — posters, digital banners, ticket layout, and merchandise mockups.",
+        category: "branding",
+        icon: "fa-music",
+        tools: ["Illustrator", "Photoshop", "Canva"],
+        github: "https://github.com/denisejadeinson"
+    },
+    {
+        num: "08",
+        title: "University Event Poster Series",
+        desc: "A series of posters made for university events — formatted for both tarpaulin print and digital sharing.",
+        category: "print",
+        icon: "fa-print",
+        tools: ["Photoshop", "Illustrator"],
+        github: "https://github.com/denisejadeinson"
+    },
+    {
+        num: "09",
+        title: "Org Branding Package",
+        desc: "Logo and visual identity for a student organization — shirt design, ID layout, and social media kit included.",
+        category: "branding",
+        icon: "fa-users",
+        tools: ["Illustrator", "Canva", "Photoshop"],
+        github: "https://github.com/denisejadeinson"
+    }
+];
+
+    const obs = new IntersectionObserver(entries => {
+        entries.forEach((e, i) => {
+            if (e.isIntersecting) {
+                setTimeout(() => e.target.classList.add('visible'), i * 80);
+                obs.unobserve(e.target);
+            }
+        });
+    }, { threshold: 0.08 });
+
+    function render(category) {
+        const grid = document.getElementById('projects-grid');
+        const items = category === 'all' ? projects : projects.filter(p => p.category === category);
+
+        if (!items.length) {
+            grid.innerHTML = `<div class="no-results"><i class="fas fa-folder-open"></i><p>Nothing here yet — check back soon.</p></div>`;
+            return;
+        }
+
+        grid.innerHTML = items.map(p => `
+            <div class="project-card reveal">
+                <div class="project-thumb">
+                    <i class="fas ${p.icon} project-thumb-icon"></i>
+                    <span class="project-cat-badge">${p.category}</span>
+                    <span class="project-num">${p.num}</span>
+                </div>
+                <div class="project-body">
+                    <div class="project-title">${p.title}</div>
+                    <p class="project-desc">${p.desc}</p>
+                    <div class="project-tools">
+                        ${p.tools.map(t => `<span class="project-tool">${t}</span>`).join('')}
+                    </div>
+                    <div class="project-links">
+                        <a href="${p.github}" target="_blank" class="project-link">
+                            <i class="fab fa-github"></i> GitHub
+                        </a>
+                        <a href="#" class="project-link">
+                            <i class="fas fa-arrow-up-right-from-square"></i> View
+                        </a>
+                    </div>
+                </div>
+            </div>
+        `).join('');
+
+        document.querySelectorAll('.reveal:not(.visible)').forEach(el => obs.observe(el));
+    }
+
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            render(btn.dataset.category);
+        });
+    });
+
+    render('all');
+</script>
+{% endblock %}
