@@ -208,9 +208,73 @@
     display: block;
 }
 
+/* MODAL */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(28, 20, 16, 0.85);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+}
+
+.modal-overlay.open { display: flex; }
+
+.modal-box {
+    background: var(--cream);
+    border-radius: 8px;
+    max-width: 860px;
+    width: 100%;
+    overflow: hidden;
+}
+
+.modal-img {
+    width: 100%;
+    max-height: 75vh;
+    object-fit: contain;
+    display: block;
+    background: var(--cream2);
+}
+
+.modal-footer {
+    padding: 1.2rem 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid var(--border);
+}
+
+.modal-title {
+    font-family: 'Fraunces', serif;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--ink);
+}
+
+.modal-close {
+    background: none;
+    border: 1.5px solid var(--border);
+    border-radius: 4px;
+    padding: 0.4rem 1rem;
+    font-size: 0.8rem;
+    font-weight: 500;
+    font-family: 'Karla', sans-serif;
+    color: var(--muted);
+    cursor: pointer;
+    transition: border-color 0.2s, color 0.2s;
+}
+
+.modal-close:hover {
+    border-color: var(--terra);
+    color: var(--terra);
+}
+
 @media (max-width: 768px) {
     .portfolio-hero, .filter-wrap, .projects-wrap { padding-left: 1.5rem; padding-right: 1.5rem; }
     .projects-grid { grid-template-columns: 1fr; }
+    .modal-overlay { padding: 1rem; }
 }
 
 {% endblock %}
@@ -236,8 +300,20 @@
     <button class="filter-btn" data-category="illustration">Illustration</button>
     <button class="filter-btn" data-category="print">Print</button>
 </div>
+
 <div class="projects-wrap">
     <div class="projects-grid" id="projects-grid"></div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal">
+    <div class="modal-box">
+        <img src="" alt="" class="modal-img" id="modal-img">
+        <div class="modal-footer">
+            <span class="modal-title" id="modal-title"></span>
+            <button class="modal-close" id="modal-close">Close</button>
+        </div>
+    </div>
 </div>
 
 {% endblock %}
@@ -247,141 +323,126 @@
 const projects = [
     {
         num: "01",
-        title: "Tech Startup Brand Identity",
-        desc: "Complete brand identity for a local tech startup — logo, color palette, typography, and a short brand guidelines document.",
-        category: "branding",
-        icon: "fa-building",
-        tools: ["Adobe Illustrator", "Figma", "Photoshop"],
-        github: "https://github.com/denisejadeinson"
+        title: "Newspaper Layout",
+        desc: "A newspaper layout designed using Adobe InDesign, focusing on grid structure, typography hierarchy, and editorial composition.",
+        category: "print",
+        icon: "fa-newspaper",
+        image: "/static/midtermportfolio/imgs/adobe InDesign.jpg",
+        tools: ["Adobe InDesign"],
     },
     {
         num: "02",
-        title: "Coffee Shop Logo",
-        desc: "Minimalist logo for a small local coffee shop. The brief was simple: warm, memorable, and works at any size.",
+        title: "Logo Design",
+        desc: "A logo created in Adobe Illustrator — clean vector work built for scalability and brand recognition.",
         category: "logo",
-        icon: "fa-mug-hot",
-        tools: ["Adobe Illustrator", "Canva"],
-        github: "https://github.com/denisejadeinson"
+        icon: "fa-pen-nib",
+        image: "/static/midtermportfolio/imgs/adobe illustrator.jpg",
+        tools: ["Adobe Illustrator"],
     },
     {
         num: "03",
-        title: "Product Launch Campaign",
-        desc: "Social media graphics for a product launch — Instagram posts, stories, and Facebook cover across three weeks of content.",
-        category: "social",
-        icon: "fa-hashtag",
-        tools: ["Canva", "Photoshop", "Figma"],
-        github: "https://github.com/denisejadeinson"
+        title: "Flyers Design",
+        desc: "Event flyers made in Adobe Photoshop — layout, typography, and visual hierarchy designed to grab attention.",
+        category: "print",
+        icon: "fa-file-image",
+        image: "/static/midtermportfolio/imgs/adobe Photoshop flyers.jpg",
+        tools: ["Adobe Photoshop"],
     },
     {
         num: "04",
-        title: "Children's Book Illustrations",
-        desc: "A set of character illustrations for a short children's educational story. Bright, friendly, and made to hold a kid's attention.",
-        category: "illustration",
-        icon: "fa-paintbrush",
-        tools: ["Adobe Illustrator", "Procreate"],
-        github: "https://github.com/denisejadeinson"
+        title: "Logo Design",
+        desc: "A logo created in Adobe Photoshop with attention to color, shape, and visual balance.",
+        category: "logo",
+        icon: "fa-file-image",
+        image: "/static/midtermportfolio/imgs/adobe Photoshop logo.jpg",
+        tools: ["Adobe Photoshop"],
     },
     {
         num: "05",
-        title: "Restaurant Visual Identity",
-        desc: "Branding package for a small restaurant — logo, menu layout, business card, and a few social media templates.",
-        category: "branding",
-        icon: "fa-utensils",
-        tools: ["Illustrator", "InDesign", "Figma"],
-        github: "https://github.com/denisejadeinson"
-    },
-    {
-        num: "06",
-        title: "Instagram Story Templates",
-        desc: "20 editable Instagram story templates for a small brand. Cohesive visual language, easy to customise week to week.",
-        category: "social",
-        icon: "fa-mobile-screen",
-        tools: ["Canva", "Photoshop"],
-        github: "https://github.com/denisejadeinson"
-    },
-    {
-        num: "07",
-        title: "Music Festival Branding",
-        desc: "Visual identity for a local music event — posters, digital banners, ticket layout, and merchandise mockups.",
-        category: "branding",
-        icon: "fa-music",
-        tools: ["Illustrator", "Photoshop", "Canva"],
-        github: "https://github.com/denisejadeinson"
-    },
-    {
-        num: "08",
-        title: "University Event Poster Series",
-        desc: "A series of posters made for university events — formatted for both tarpaulin print and digital sharing.",
+        title: "Poster Design",
+        desc: "A poster created in Canva with a focus on clean layout, color, and visual communication.",
         category: "print",
-        icon: "fa-print",
-        tools: ["Photoshop", "Illustrator"],
-        github: "https://github.com/denisejadeinson"
+        icon: "fa-image",
+        image: "/static/midtermportfolio/imgs/canvaposter.jpg",
+        tools: ["Canva"],
     },
-    {
-        num: "09",
-        title: "Org Branding Package",
-        desc: "Logo and visual identity for a student organization — shirt design, ID layout, and social media kit included.",
-        category: "branding",
-        icon: "fa-users",
-        tools: ["Illustrator", "Canva", "Photoshop"],
-        github: "https://github.com/denisejadeinson"
-    }
 ];
 
-    const obs = new IntersectionObserver(entries => {
-        entries.forEach((e, i) => {
-            if (e.isIntersecting) {
-                setTimeout(() => e.target.classList.add('visible'), i * 80);
-                obs.unobserve(e.target);
-            }
-        });
-    }, { threshold: 0.08 });
-
-    function render(category) {
-        const grid = document.getElementById('projects-grid');
-        const items = category === 'all' ? projects : projects.filter(p => p.category === category);
-
-        if (!items.length) {
-            grid.innerHTML = `<div class="no-results"><i class="fas fa-folder-open"></i><p>Nothing here yet — check back soon.</p></div>`;
-            return;
+const obs = new IntersectionObserver(entries => {
+    entries.forEach((e, i) => {
+        if (e.isIntersecting) {
+            setTimeout(() => e.target.classList.add('visible'), i * 80);
+            obs.unobserve(e.target);
         }
+    });
+}, { threshold: 0.08 });
 
-        grid.innerHTML = items.map(p => `
-            <div class="project-card reveal">
-                <div class="project-thumb">
-                    <i class="fas ${p.icon} project-thumb-icon"></i>
-                    <span class="project-cat-badge">${p.category}</span>
-                    <span class="project-num">${p.num}</span>
-                </div>
-                <div class="project-body">
-                    <div class="project-title">${p.title}</div>
-                    <p class="project-desc">${p.desc}</p>
-                    <div class="project-tools">
-                        ${p.tools.map(t => `<span class="project-tool">${t}</span>`).join('')}
-                    </div>
-                    <div class="project-links">
-                        <a href="${p.github}" target="_blank" class="project-link">
-                            <i class="fab fa-github"></i> GitHub
-                        </a>
-                        <a href="#" class="project-link">
-                            <i class="fas fa-arrow-up-right-from-square"></i> View
-                        </a>
-                    </div>
-                </div>
-            </div>
-        `).join('');
+function render(category) {
+    const grid = document.getElementById('projects-grid');
+    const items = category === 'all' ? projects : projects.filter(p => p.category === category);
 
-        document.querySelectorAll('.reveal:not(.visible)').forEach(el => obs.observe(el));
+    if (!items.length) {
+        grid.innerHTML = `<div class="no-results"><i class="fas fa-folder-open"></i><p>Nothing here yet — check back soon.</p></div>`;
+        return;
     }
 
-    document.querySelectorAll('.filter-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            render(btn.dataset.category);
-        });
-    });
+    grid.innerHTML = items.map(p => `
+        <div class="project-card reveal">
+            <div class="project-thumb">
+                ${p.image
+                    ? `<img src="${p.image}" style="width:100%; height:100%; object-fit:cover;">`
+                    : `<i class="fas ${p.icon} project-thumb-icon"></i>`
+                }
+                <span class="project-cat-badge">${p.category}</span>
+                <span class="project-num">${p.num}</span>
+            </div>
+            <div class="project-body">
+                <div class="project-title">${p.title}</div>
+                <p class="project-desc">${p.desc}</p>
+                <div class="project-tools">
+                    ${p.tools.map(t => `<span class="project-tool">${t}</span>`).join('')}
+                </div>
+                <div class="project-links">
+                    <a href="#" class="project-link" onclick="openModal('${p.image}', '${p.title}'); return false;">
+                        <i class="fas fa-arrow-up-right-from-square"></i> View
+                    </a>
+                </div>
+            </div>
+        </div>
+    `).join('');
 
-    render('all');
+    document.querySelectorAll('.reveal:not(.visible)').forEach(el => obs.observe(el));
+}
+
+function openModal(image, title) {
+    document.getElementById('modal-img').src = image;
+    document.getElementById('modal-title').textContent = title;
+    document.getElementById('modal').classList.add('open');
+}
+
+function closeModal() {
+    document.getElementById('modal').classList.remove('open');
+    document.getElementById('modal-img').src = '';
+}
+
+document.getElementById('modal-close').addEventListener('click', closeModal);
+
+document.getElementById('modal').addEventListener('click', function(e) {
+    if (e.target === this) closeModal();
+});
+
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeModal();
+});
+
+document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        render(btn.dataset.category);
+    });
+});
+
+render('all');
 </script>
 {% endblock %}
